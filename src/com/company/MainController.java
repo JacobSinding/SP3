@@ -4,7 +4,7 @@ import com.company.Pizza;
 import com.company.ShowMenu;
 import com.company.ShowMenuDK;
 import com.sun.codemodel.internal.JForEach;
-//import com.company.ShowMenuUK;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,6 +19,7 @@ public class MainController {
     Scanner sc = new Scanner(System.in);
     ShowMenu showMenu = new ShowMenuDK();
     List<Pizza> pizzaList = getAllPizzasFromSource();
+    List<Order> bestillinger = new ArrayList<>();
 
     public void runProgram() {
         showMenu.showMenu();
@@ -41,14 +42,18 @@ public class MainController {
     }
     //Createorder 1. Via alle pizza'er.
     private void createOrder() {
+        //string customerName, int phoneNumber
+        System.out.println("Hvad hedder du?");
+        String customerName = sc.nextLine();
+        System.out.println("Hvad er dit nummer?");
+        int phoneNumber = sc.nextInt();
+        Order order = new Order(customerName, phoneNumber);
         int lchoice = 0;
-        while (lchoice != 9) {
-            choice = sc.nextInt();
-            switch (lchoice) {
-                case 1: showMenu = new ShowMenuDK();break;
-
-            }
-
+        while (lchoice != 99) {
+            System.out.println("Indtast Pizza nummer, 99 for exit");
+            lchoice = sc.nextInt();
+            Pizza pizza = getPizzaById(lchoice);
+            order.addPizzaToOrder(pizza);
         }
     }
 
@@ -81,6 +86,16 @@ public class MainController {
             e.printStackTrace();
         }
         return returnList;
+    }
+
+    public Pizza getPizzaById(int id){
+        Pizza returPizza = null;
+        for (Pizza pizza:pizzaList) {
+        if (pizza.getNumber() == id){
+            return pizza;
+        }
+        }
+        return returPizza;
     }
 
 }
